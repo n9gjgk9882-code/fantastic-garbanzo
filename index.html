@@ -242,6 +242,8 @@ body.modal-on .dado{z-index:61}
 .planos iframe{position:absolute;left:0;right:0;bottom:0;top:calc(50px + env(safe-area-inset-top,0px));width:100%;height:calc(100% - 50px - env(safe-area-inset-top,0px));border:0;background:#0b0b0c}
 .som{position:absolute;z-index:3;top:14px;left:0;right:0;margin:0 auto;width:fit-content;max-width:90%;padding:11px 18px;border:0;border-radius:99px;background:#fff;color:#111;font:800 .95rem var(--b);cursor:pointer;box-shadow:0 4px 18px #0009;text-shadow:none;animation:pulsar 1.2s ease-in-out infinite}
 #espaco-vsl{aspect-ratio:1280/828}
+#espaco-vsl .wistia_embed{position:absolute;inset:3px;width:auto!important;height:auto!important;border-radius:13px;overflow:hidden;background:#000}
+.tocando .som{z-index:5}
 </style>
 </head>
 <body>
@@ -256,8 +258,8 @@ body.modal-on .dado{z-index:61}
   <h1><span class="vv">R$2.324,50</span> em um dia sem estoque</h1>
   <div class="live" role="status"><span class="ao-vivo"><i></i>AO VIVO</span><span class="quem">Algumas pessoas estão assistindo agora</span></div>
   <svg class="seta" viewBox="0 0 60 70" width="54" height="63" aria-hidden="true"><path d="M30 4v46M8 34l22 24 22-24" fill="none" stroke="#22c55e" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  <div class="slot vid" id="espaco-vsl"><a class="facade" href="https://youtu.be/Ewtp8SBQARo?si=BtUA-_4DeztEHRum" target="_blank" rel="noopener"><span class="play">▶</span>Toque para assistir Aulão Gratuito no YouTube<small>Assista até o final e volte para clicar em Quero fazer parte</small></a></div>
-  <a class="vlink" href="https://youtu.be/Ewtp8SBQARo?si=BtUA-_4DeztEHRum" target="_blank" rel="noopener">Não abriu? Assista no YouTube</a>
+  <div class="slot vid" id="espaco-vsl"><a class="facade" href="https://fast.wistia.net/embed/iframe/1v7xfkqb0k" target="_blank" rel="noopener"><span class="play">▶</span>Toque para assistir o Aulão Gratuito<small>Assista até o final e volte para clicar em Quero fazer parte</small></a></div>
+  <a class="vlink" href="https://fast.wistia.net/embed/iframe/1v7xfkqb0k" target="_blank" rel="noopener">Não abriu? Toque aqui para assistir</a>
   <p class="faltam">Faltam apenas <b>4</b> pessoas para entrar.</p>
   <div class="entraram"><strong>Já entraram hoje</strong><svg class="sn2" viewBox="0 0 24 30" width="20" height="26" aria-hidden="true"><path d="M12 3v21M4 15l8 10 8-10" fill="none" stroke="#22c55e" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg><ul><li>Valéria Silva Benedito</li><li>Vinícius Bittencourt</li><li>Henrique Soares Pinto</li></ul></div>
   <a class="btn" href="#simples">Quero fazer parte</a>
@@ -478,17 +480,30 @@ document.head.appendChild(s);
 setTimeout(function(){if(!window.__d3ok)fallback()},8000);
 })();
 
-// VSL no Wistia: começa sozinha (sem som, regra dos navegadores) e o próprio Wistia mostra "clique para ouvir"
+// VSL no Wistia: player carregado na própria página (sem iframe) para o toque na capa liberar o som no celular
 var WISTIA_ID='1v7xfkqb0k';
-(function(){if(!WISTIA_ID)return;var box=document.getElementById('espaco-vsl');if(!box)return;
-window.__vslWistia=true;var bad=false;
-function onv(e){if(/wistia/.test(e.blockedURI||''))bad=true}
-document.addEventListener('securitypolicyviolation',onv);
-var f=document.createElement('iframe');
-f.src='https://fast.wistia.net/embed/iframe/'+WISTIA_ID+'?autoPlay=true&muted=true&playsinline=true&silentAutoPlay=allow&videoFoam=false&fitStrategy=contain&playbar=true&smallPlayButton=true';
-f.title='Aulão Gratuito';f.className='vf';f.allow='autoplay; fullscreen; picture-in-picture; encrypted-media';f.allowFullscreen=true;
-box.appendChild(f);box.classList.add('tocando');
-setTimeout(function(){document.removeEventListener('securitypolicyviolation',onv);if(bad){f.remove();box.classList.remove('tocando')}},3000);
+(function(){if(!WISTIA_ID)return;var box=document.getElementById('espaco-vsl'),a=box&&box.querySelector('.facade');if(!a)return;
+window.__vslWistia=true;var V=null,quer=false;
+var d=document.createElement('div');
+d.className='vf wistia_embed wistia_async_'+WISTIA_ID+' autoPlay=false playsinline=true videoFoam=false fitStrategy=contain playbar=true volumeControl=true';
+box.appendChild(d);
+var som=document.createElement('button');som.type='button';som.className='som';som.textContent='🔊 Toque aqui para ativar o som';
+function ligaSom(){if(!V)return;try{V.unmute();V.volume(1);V.play()}catch(x){}}
+function confere(){setTimeout(function(){try{if(V.isMuted()||V.state()!=='playing'){if(!som.parentNode)box.appendChild(som)}else if(som.parentNode)som.remove()}catch(x){}},900)}
+som.addEventListener('click',function(e){e.stopPropagation();ligaSom();som.remove();confere()});
+function tocar(){box.classList.add('tocando');ligaSom();confere()}
+window._wq=window._wq||[];
+_wq.push({id:WISTIA_ID,onReady:function(v){V=v;
+ v.bind('play',function(){box.classList.add('tocando')});
+ v.bind('mutechange',function(m){if(!m&&som.parentNode)som.remove()});
+ if(quer)tocar()}});
+var s=document.createElement('script');s.src='https://fast.wistia.com/assets/external/E-v1.js';s.async=true;
+s.onerror=function(){d.remove();window.__vslSemPlayer=true};document.head.appendChild(s);
+a.addEventListener('click',function(e){
+ if(window.__vslSemPlayer)return; // sem player: abre o vídeo no link
+ e.preventDefault();
+ if(V)tocar();else{quer=true;box.classList.add('tocando')}
+});
 })();
 // VSL: começa sozinha (sem som, regra dos navegadores) via API oficial do YouTube; um toque ativa o som
 (function(){if(window.__vslWistia)return;var box=document.getElementById('espaco-vsl'),a=box&&box.querySelector('.facade');if(!a)return;
