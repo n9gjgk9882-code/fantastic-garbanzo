@@ -281,26 +281,33 @@ main{text-shadow:none}
 #espaco-vsl.previa .facade{background:radial-gradient(circle at 50% 45%,rgba(11,6,19,.05),rgba(11,6,19,.42) 80%)!important;text-shadow:0 2px 10px #000,0 0 3px #000}
 :root{--mut:#f3eeff}
 .facade small,.sub,.card p,.step span,.vagas,.entraram strong,.hero p{color:#f3eeff}
-#loader{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 40%,#2a0e4d,#050308 70%);transition:opacity .6s,visibility .6s;text-shadow:none}
-#loader.sai{opacity:0;visibility:hidden}
+#loader{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:20px;background:rgba(5,3,8,.35);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:opacity .6s,-webkit-backdrop-filter .6s,backdrop-filter .6s,visibility .6s;text-shadow:none}
+#loader.sai{opacity:0;visibility:hidden;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}
 html.ld-trava,html.ld-trava body{overflow:hidden}
-.ld-box{width:min(320px,86vw);text-align:center}
-.ld-txt{color:#fff;font:800 1.05rem var(--b);margin-bottom:16px;animation:pisca 1.2s ease-in-out infinite}
-.ld-bar{height:10px;border-radius:99px;background:#ffffff1a;overflow:hidden;box-shadow:0 0 20px #8b3dff55}
-.ld-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#8b3dff,#c084fc,#22c55e);animation:ldEnche 2.5s cubic-bezier(.4,.1,.3,1) forwards}
-@keyframes ldEnche{to{width:100%}}
-.ld-ok{display:none;margin-top:18px;color:#22c55e;font:800 1.5rem var(--d);animation:ldPop .45s cubic-bezier(.2,1.4,.4,1)}
-#loader.ok .ld-txt,#loader.ok .ld-bar{display:none}
+.ld-box{display:grid;justify-items:center}
+.ld-spin{width:54px;height:54px;border-radius:50%;border:5px solid #22c55e33;border-top-color:#22c55e;box-shadow:0 0 22px #22c55e66;animation:ldGira .8s linear infinite}
+@keyframes ldGira{to{transform:rotate(360deg)}}
+.ld-ok{display:none;padding:12px 22px;border-radius:99px;background:rgba(5,3,8,.75);border:1px solid #22c55e88;color:#22c55e;font:800 1.35rem var(--d);box-shadow:0 0 30px #22c55e55;animation:ldPop .45s cubic-bezier(.2,1.4,.4,1)}
+#loader.ok .ld-spin{display:none}
 #loader.ok .ld-ok{display:block}
 @keyframes ldPop{from{opacity:0;transform:scale(.6)}}
+@media (prefers-reduced-motion:reduce){.ld-spin{animation:ldGira .8s linear infinite!important}}
+.entraram li span.quando{display:block;background:none;border:0;padding:0 0 0 32px;border-radius:0;animation:none;box-shadow:none}
+.entraram li span.quando::before{content:none}
+.ld-ok{max-width:88vw;text-align:center;font-size:clamp(1rem,4.6vw,1.35rem)!important}
+.ld-ok{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;text-shadow:0 0 18px #22c55e99,0 2px 8px #000}
+.falta-cta{margin:0 0 18px;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,0 2px 6px rgba(0,0,0,.55);animation:pulsar 1.4s ease-in-out infinite,brilhaTxt 1.4s ease-in-out infinite}
+.fim-esp{height:40px}
+@media (max-width:640px){.fim-esp{height:110px}}
 </style>
 </head>
 <body>
-<div id="loader" role="status" aria-live="polite"><div class="ld-box"><div class="ld-txt">Carregando seu acesso…</div><div class="ld-bar"><i></i></div><div class="ld-ok">✅ Acesso liberado</div></div></div>
+<div id="loader" role="status" aria-live="polite"><div class="ld-box"><div class="ld-spin"></div><div class="ld-ok">Seu acesso está autorizado</div></div></div>
 <script>(function(){var L=document.getElementById('loader');document.documentElement.classList.add('ld-trava');
-setTimeout(function(){L.classList.add('ok')},2500);
-setTimeout(function(){L.classList.add('sai');document.documentElement.classList.remove('ld-trava')},3500);
-setTimeout(function(){L.remove()},4100)})();</script>
+setTimeout(function(){L.classList.add('ok')},1000);
+setTimeout(function(){L.classList.add('sai');document.documentElement.classList.remove('ld-trava')},2500);
+setTimeout(function(){L.remove()},3200)})();</script>
+
 
 <canvas id="fx" aria-hidden="true"></canvas>
 <div class="orb o1"></div><div class="orb o2"></div>
@@ -312,14 +319,12 @@ setTimeout(function(){L.remove()},4100)})();</script>
   <span class="tag"><i class="dot"></i> Projeto privado gratuito</span>
   <h1><span class="vv">R$2.324,50</span> em um dia sem estoque</h1>
   <div class="live" role="status"><span class="ao-vivo"><i></i>AO VIVO</span><span class="quem">Algumas pessoas estão assistindo agora</span></div>
-  <svg class="seta" viewBox="0 0 60 70" width="54" height="63" aria-hidden="true"><path d="M30 4v46M8 34l22 24 22-24" fill="none" stroke="#22c55e" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <svg class="seta" viewBox="-4 -4 68 78" width="58" height="67" aria-hidden="true"><path d="M30 4v46M8 34l22 24 22-24" fill="none" stroke="#000" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 4v46M8 34l22 24 22-24" fill="none" stroke="#22c55e" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
   <div class="slot vid" id="espaco-vsl"><a class="facade" href="https://fast.wistia.net/embed/iframe/1v7xfkqb0k" target="_blank" rel="noopener"><span class="play">▶</span>Toque para assistir o Aulão Gratuito<small>Assista até o final e volte para clicar em Quero fazer parte</small></a></div>
-  <a class="vlink" href="https://fast.wistia.net/embed/iframe/1v7xfkqb0k" target="_blank" rel="noopener">Não abriu? Toque aqui para assistir</a>
   <p class="faltam">Faltam apenas <b>4</b> pessoas para entrar.</p>
   <div class="entraram"><strong>Últimos a entrarem</strong><svg class="sn2" viewBox="0 0 24 30" width="20" height="26" aria-hidden="true"><path d="M12 3v21M4 15l8 10 8-10" fill="none" stroke="#22c55e" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg><ul><li>Valéria Benedito Costa</li><li>Vinícius Bittencourt</li><li>Henrique Soares Pinto<span class="quando">entrou algumas horas atrás</span></li></ul></div>
   <a class="btn" href="#simples">Quero fazer parte</a>
   <p id="espera" class="espera"></p>
-  <div class="vagas"><b id="cont">0</b><span>vagas no total.<br>Seleção feita por mim.</span></div>
 </div></header>
 
 <section><div class="wrap">
@@ -351,14 +356,10 @@ setTimeout(function(){L.remove()},4100)})();</script>
     <div class="step rv"><b>2. Aplique a estratégia</b><span>Com meu suporte direto no WhatsApp.</span></div>
     <div class="step troca rv"><b>3. Me mande o print</b><span>Preciso que você tenha resultado. Seu print vai para a página oficial do meu curso, e é com ele que eu vendo o curso para outras pessoas.</span><em class="troca-l">Meu objetivo não é te vender nada.</em></div>
   </div>
-  <div style="text-align:center;margin-top:30px"><a class="btn" href="#modal" data-abrir="1"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Começar agora</a></div>
+  <div style="text-align:center;margin-top:30px"><h2 class="falta-cta">Faltam apenas 4 vagas</h2><a class="btn" href="#modal" data-abrir="1"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Começar agora</a></div>
 </div></section>
 
-<div class="fim"><div class="wrap">
-  <h2 class="rv">Faltam apenas 4 vagas</h2>
-  
-  
-</div></div>
+<div class="fim-esp"></div>
 </main>
 <div class="sticky"><a class="btn" href="#simples">Quero fazer parte</a></div>
 
@@ -652,7 +653,7 @@ var LIBERAR_BOTAO_APOS_SEGUNDOS=0;
 if(LIBERAR_BOTAO_APOS_SEGUNDOS>0){var s=LIBERAR_BOTAO_APOS_SEGUNDOS,e=document.getElementById('espera');document.body.classList.add('trava');
  var iv=setInterval(function(){s--;e.textContent='O botão para entrar aparece em '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0');if(s<=0){clearInterval(iv);document.body.classList.remove('trava')}},1000)}
 // contador de vagas 0 -> 12
-var n=0,el=document.getElementById('cont'),t=setInterval(function(){n++;el.textContent=n<12?n:'8 a 12';if(n>=12)clearInterval(t)},110);
+var n=0,el=document.getElementById('cont')||{},t=setInterval(function(){n++;el.textContent=n<12?n:'8 a 12';if(n>=12)clearInterval(t)},110);
 </script>
 </body>
 </html>
