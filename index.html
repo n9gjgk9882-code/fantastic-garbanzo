@@ -273,9 +273,35 @@ body.modal-on .dado{z-index:61}
 .pv.dentro .pv-s:nth-child(2){transition-delay:.12s}.pv.dentro .pv-s:nth-child(3){transition-delay:.24s}
 .pv-zoom{box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 22px #22c55e26}
 .entraram li{flex-wrap:wrap}.entraram li .quando{flex-basis:100%;padding-left:32px;margin-top:-4px;font-weight:600;font-size:.8rem;color:#86efac}
+main{text-shadow:none}
+.hero p.faltam,.fim h2,.vagas{text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,0 2px 6px rgba(0,0,0,.55)}
+@keyframes brilhaSem{50%{text-shadow:0 0 20px #c084fcdd}}
+.pulsa{animation:pulsar 1.4s ease-in-out infinite,brilhaSem 1.4s ease-in-out infinite}
+#espaco-vsl.previa .vf{filter:blur(2px) brightness(.88)!important;transform:scale(1.02)!important}
+#espaco-vsl.previa .facade{background:radial-gradient(circle at 50% 45%,rgba(11,6,19,.05),rgba(11,6,19,.42) 80%)!important;text-shadow:0 2px 10px #000,0 0 3px #000}
+:root{--mut:#f3eeff}
+.facade small,.sub,.card p,.step span,.vagas,.entraram strong,.hero p{color:#f3eeff}
+#loader{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 40%,#2a0e4d,#050308 70%);transition:opacity .6s,visibility .6s;text-shadow:none}
+#loader.sai{opacity:0;visibility:hidden}
+html.ld-trava,html.ld-trava body{overflow:hidden}
+.ld-box{width:min(320px,86vw);text-align:center}
+.ld-txt{color:#fff;font:800 1.05rem var(--b);margin-bottom:16px;animation:pisca 1.2s ease-in-out infinite}
+.ld-bar{height:10px;border-radius:99px;background:#ffffff1a;overflow:hidden;box-shadow:0 0 20px #8b3dff55}
+.ld-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#8b3dff,#c084fc,#22c55e);animation:ldEnche 2.5s cubic-bezier(.4,.1,.3,1) forwards}
+@keyframes ldEnche{to{width:100%}}
+.ld-ok{display:none;margin-top:18px;color:#22c55e;font:800 1.5rem var(--d);animation:ldPop .45s cubic-bezier(.2,1.4,.4,1)}
+#loader.ok .ld-txt,#loader.ok .ld-bar{display:none}
+#loader.ok .ld-ok{display:block}
+@keyframes ldPop{from{opacity:0;transform:scale(.6)}}
 </style>
 </head>
 <body>
+<div id="loader" role="status" aria-live="polite"><div class="ld-box"><div class="ld-txt">Carregando seu acesso…</div><div class="ld-bar"><i></i></div><div class="ld-ok">✅ Acesso liberado</div></div></div>
+<script>(function(){var L=document.getElementById('loader');document.documentElement.classList.add('ld-trava');
+setTimeout(function(){L.classList.add('ok')},2500);
+setTimeout(function(){L.classList.add('sai');document.documentElement.classList.remove('ld-trava')},3500);
+setTimeout(function(){L.remove()},4100)})();</script>
+
 <canvas id="fx" aria-hidden="true"></canvas>
 <div class="orb o1"></div><div class="orb o2"></div>
 <div class="dado" aria-hidden="true"><div class="cubo"><i></i><i></i><i></i><i></i><i></i><i></i><b></b><b></b><b></b><b></b><b></b><b></b></div></div>
