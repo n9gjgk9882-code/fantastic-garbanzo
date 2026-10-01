@@ -244,6 +244,11 @@ body.modal-on .dado{z-index:61}
 #espaco-vsl{aspect-ratio:1280/828}
 #espaco-vsl .wistia_embed{position:absolute;inset:3px;width:auto!important;height:auto!important;border-radius:13px;overflow:hidden;background:#000}
 .tocando .som{z-index:5}
+#espaco-vsl .facade{position:relative;z-index:4}
+#espaco-vsl.previa .vf{opacity:1;filter:blur(7px) brightness(.6);transform:scale(1.08);pointer-events:none}
+#espaco-vsl.previa .facade{background:radial-gradient(circle at 50% 45%,rgba(11,6,19,.25),rgba(11,6,19,.7) 75%)!important}
+#espaco-vsl.previa .play{animation:beat 1.4s ease-in-out infinite;transform:scale(1.1)}
+#espaco-vsl.tocando .vf{filter:none;transform:none}
 </style>
 </head>
 <body>
@@ -317,7 +322,7 @@ body.modal-on .dado{z-index:61}
   P.forEach(function(p,i){
    var dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy);
    if(d<120){p.vx+=dx/d*.05;p.vy+=dy/d*.05}
-   p.vx*=.99;p.vy*=.99;p.x+=p.vx;p.y+=p.vy;
+   var R=window.__ritmo||1;p.vx*=.99;p.vy*=.99;p.x+=p.vx*R;p.y+=p.vy*R;
    if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
    x.fillStyle='#c084fc';x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill();
    for(var j=i+1;j<P.length;j++){var q=P[j],l=Math.hypot(p.x-q.x,p.y-q.y);
@@ -348,7 +353,7 @@ addEventListener('scroll',function(){var k=Math.max(-60,Math.min(60,scrollY-ly))
  boost=Math.max(-380,Math.min(380,boost+k*3));
  D.forEach(function(o){o.vy=Math.max(-260,Math.min(260,o.vy+k*1.6))});
 },{passive:true});
-function f(t){var dt=Math.min((t-last)/1000,.05);last=t;var W=innerWidth,H=innerHeight;fr++;
+function f(t){var dt=Math.min((t-last)/1000,.05)*(window.__ritmo||1);last=t;var W=innerWidth,H=innerHeight;fr++;
  boost*=Math.pow(.3,dt);var r=Math.min(1,dt*.55),a=Math.min(1,dt*1.1);
  D.forEach(function(o){var s=o.d.offsetWidth;o.s=s;o.m=s*s/14400;
   o.vy+=((o.vy<0?-o.by:o.by)-o.vy)*r;o.vx+=((o.vx<0?-o.bx:o.bx)-o.vx)*r;
@@ -439,7 +444,7 @@ function init3d(){
  cv.addEventListener('webglcontextlost',function(e){e.preventDefault();stop();done=false;fallback()});
  function loop(t){
   try{
-   var dt=Math.min((t-last)/1000,.05);last=t;
+   var dt=Math.min((t-last)/1000,.05)*(window.__ritmo||1);last=t;
    boost*=Math.pow(.3,dt);var rr=Math.min(1,dt*.55),aa=Math.min(1,dt*1.1),B=boost*Math.PI/180;
    D.forEach(function(o){var s=o.s,R=s/2;o.m=s*s/14400;
     o.vy+=((o.vy<0?-o.by:o.by)-o.vy)*rr;o.vx+=((o.vx<0?-o.bx:o.bx)-o.vx)*rr;
@@ -480,29 +485,42 @@ document.head.appendChild(s);
 setTimeout(function(){if(!window.__d3ok)fallback()},8000);
 })();
 
-// VSL no Wistia: player carregado na própria página (sem iframe) para o toque na capa liberar o som no celular
+// ritmo da página: enquanto a VSL toca com som, tudo fica bem mais lento
+window.__ritmo=1;
+window.ritmoPagina=function(r){window.__ritmo=r;document.body.classList.toggle('foco',r<1);
+ try{document.getAnimations().forEach(function(an){var el=an.effect&&an.effect.target;if(el&&el.closest&&el.closest('#modal,.modal-bg,#planos'))return;an.playbackRate=r})}catch(x){}};
+setInterval(function(){if(window.__ritmo<1)window.ritmoPagina(window.__ritmo)},1500);
+// VSL no Wistia: ao entrar, roda sem som e embaçada por trás da capa; no toque, volta do zero com som
 var WISTIA_ID='1v7xfkqb0k';
 (function(){if(!WISTIA_ID)return;var box=document.getElementById('espaco-vsl'),a=box&&box.querySelector('.facade');if(!a)return;
-window.__vslWistia=true;var V=null,quer=false;
+window.__vslWistia=true;var V=null,quer=false,ativo=false;
 var d=document.createElement('div');
-d.className='vf wistia_embed wistia_async_'+WISTIA_ID+' autoPlay=false playsinline=true videoFoam=false fitStrategy=contain playbar=true volumeControl=true';
+d.className='vf wistia_embed wistia_async_'+WISTIA_ID+' autoPlay=true muted=true silentAutoPlay=allow playsinline=true videoFoam=false fitStrategy=contain playbar=true volumeControl=true endVideoBehavior=default';
 box.appendChild(d);
 var som=document.createElement('button');som.type='button';som.className='som';som.textContent='🔊 Toque aqui para ativar o som';
-function ligaSom(){if(!V)return;try{V.unmute();V.volume(1);V.play()}catch(x){}}
-function confere(){setTimeout(function(){try{if(V.isMuted()||V.state()!=='playing'){if(!som.parentNode)box.appendChild(som)}else if(som.parentNode)som.remove()}catch(x){}},900)}
-som.addEventListener('click',function(e){e.stopPropagation();ligaSom();som.remove();confere()});
-function tocar(){box.classList.add('tocando');ligaSom();confere()}
+function ligaSom(){try{V.unmute();V.volume(1);V.play()}catch(x){}}
+function confere(){setTimeout(function(){try{if(V.isMuted()){if(!som.parentNode)box.appendChild(som)}else if(som.parentNode)som.remove()}catch(x){}},900)}
+som.addEventListener('click',function(e){e.stopPropagation();ligaSom();confere()});
+function previa(){if(ativo)return;box.classList.add('previa');
+ a.innerHTML='<span class="play">▶</span>Seu vídeo já começou<small>Toque aqui para assistir do início, com som</small>'}
+function assistir(){ativo=true;box.classList.remove('previa');box.classList.add('tocando');window.ritmoPagina(.25);
+ try{V.time(0)}catch(x){}ligaSom();confere()}
 window._wq=window._wq||[];
 _wq.push({id:WISTIA_ID,onReady:function(v){V=v;
- v.bind('play',function(){box.classList.add('tocando')});
+ if(quer){assistir();return}
+ try{v.mute();v.play()}catch(x){}
+ v.bind('play',function(){if(!ativo)previa()});
  v.bind('mutechange',function(m){if(!m&&som.parentNode)som.remove()});
- if(quer)tocar()}});
+ v.bind('end',function(){window.ritmoPagina(1)});
+ v.bind('pause',function(){if(ativo)window.ritmoPagina(1)});
+ v.bind('play',function(){if(ativo)window.ritmoPagina(.25)});
+ setTimeout(function(){try{if(!ativo&&v.state()==='playing')previa()}catch(x){}},600)}});
 var s=document.createElement('script');s.src='https://fast.wistia.com/assets/external/E-v1.js';s.async=true;
 s.onerror=function(){d.remove();window.__vslSemPlayer=true};document.head.appendChild(s);
 a.addEventListener('click',function(e){
- if(window.__vslSemPlayer)return; // sem player: abre o vídeo no link
+ if(window.__vslSemPlayer)return;
  e.preventDefault();
- if(V)tocar();else{quer=true;box.classList.add('tocando')}
+ if(V)assistir();else{quer=true;box.classList.add('tocando')}
 });
 })();
 // VSL: começa sozinha (sem som, regra dos navegadores) via API oficial do YouTube; um toque ativa o som
