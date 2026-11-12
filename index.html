@@ -429,7 +429,13 @@ h2.mb-mod-t{margin:3px 0 0;text-align:left;color:#fff;font:800 clamp(1.1rem,4.6v
 .au-prev{position:absolute;left:50%;top:50%;width:100%;height:100%;border:0;z-index:0;pointer-events:none;transform:translate(-50%,-50%) scale(1.2);filter:blur(5px) brightness(.78) saturate(1.2);opacity:0;transition:opacity 1.2s ease}
 .au-prev.vert{height:316%}
 .au-prev.on{opacity:1}
-.au-t{font:800 1rem/1.3 var(--b);text-wrap:balance}
+.au-k{margin-bottom:-4px;font:800 .72rem var(--b);letter-spacing:.14em;text-transform:uppercase;color:#38cfff}
+.au-tp{display:grid;gap:5px;margin:0;padding:0;list-style:none}
+.au-tp li{position:relative;padding-left:22px;color:#cfe0f7;font-size:.86rem;line-height:1.3}
+.au-tp li:before{content:"";position:absolute;left:0;top:1px;width:15px;height:15px;border-radius:50%;background:rgba(0,170,255,.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338cfff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/11px no-repeat;box-shadow:0 0 0 1px rgba(0,200,255,.35)}
+.aula-tp{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+.aula-tp li{padding:7px 12px 7px 30px;border-radius:99px;border:1px solid rgba(0,200,255,.35);background:rgba(0,120,255,.12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338cfff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") 10px center/13px no-repeat;color:#e4f2ff;font:700 .85rem var(--b)}
+.au-t{font:800 1.15rem/1.25 var(--b);text-wrap:balance}
 .au-s{margin-top:-5px;color:#74d0fb;font-size:.84rem}
 @media (hover:hover){.au:hover .au-th{border-color:#74d1fc;box-shadow:0 0 26px rgba(81,146,251,.35);transform:translateY(-2px)}}
 .au:focus-visible{outline:none}.au:focus-visible .au-th{outline:2px solid #74d1fc;outline-offset:3px}
@@ -640,6 +646,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   <a class="aula-yt" id="auYt" href="#" target="_blank" rel="noopener" hidden><svg width="22" height="16" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#ff0033"/><path d="M11 5.5v9l8-4.5z" fill="#fff"/></svg> Assistir no YouTube</a>
   <p class="aula-mod" id="auMod"></p>
   <h2 id="auT"></h2>
+  <ul class="aula-tp" id="auTp" hidden></ul>
   <p class="aula-desc" id="auD"></p>
   <div class="aula-bts"><button type="button" class="aula-ok" id="auOk" aria-pressed="false">Marcar como concluída</button><a class="aula-prox" id="auProx" href="#aulas">Próxima aula →</a></div>
  </div>
@@ -872,13 +879,13 @@ document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
 // Em dur, a duração (ex.: '12 min'). Pode trocar títulos, descrições e criar mais aulas ou módulos.
 var MODULOS=[
  {n:'Comece por aqui',aulas:[
-  {t:'Passo 1- Plingfy do absoluto zero até os primeiros resultados!',d:'',v:'https://youtu.be/00BWWmeRP5c',dur:''},
-  {t:'Passo 2- Plingfy do absoluto zero até os primeiros resultados!',d:'',v:'https://youtu.be/YVFeP7U-zPc',dur:''}]},
+  {t:'Passo 1- Plingfy do absoluto zero até os primeiros resultados!',d:'',v:'https://youtu.be/00BWWmeRP5c',dur:'',tp:['Ativando conta de vendedor','Conectando a nossa loja','Endereço']},
+  {t:'Passo 2- Plingfy do absoluto zero até os primeiros resultados!',d:'',v:'https://youtu.be/YVFeP7U-zPc',dur:'',tp:['Cadastrando os primeiros produtos','Margem de lucro','Achando meus anúncios']}]},
  {n:'Sua conta no Mercado Livre',aulas:[
-  {t:'Passo 3- Plingfy do absoluto zero até os primeiros resultados!',d:'',v:'https://youtube.com/shorts/8jrzHnPP-B0',dur:''},
-  {t:'Passo 4- Plingfy do absoluto zero até os primeiros resultados!',d:'',v:'https://youtu.be/W6tf-A3s5Vc',dur:''}]},
+  {t:'Passo 3- Plingfy do absoluto zero até os primeiros resultados!',d:'',v:'https://youtube.com/shorts/8jrzHnPP-B0',dur:'',tp:['Colocar o fornecedor na página inicial do celular']},
+  {t:'Passo 4- Plingfy do absoluto zero até os primeiros resultados!',d:'',v:'https://youtu.be/W6tf-A3s5Vc',dur:'',tp:['Analisando o nome da loja','Criando o nome da loja','Colocando o nome da loja dentro do Mercado Livre']}]},
  {n:'Fornecedor e produtos',aulas:[
-  {t:'Passo 5- Plingfy do absoluto zero até os primeiros resultados!',d:'',v:'https://youtu.be/8Fgfmhx0Afc',dur:''},
+  {t:'Passo 5- Plingfy do absoluto zero até os primeiros resultados!',d:'',v:'https://youtu.be/8Fgfmhx0Afc',dur:'',tp:['Cadastrando endereço fiscal']},
   {t:'Nova aula em breve',d:'',v:'',dur:''}]},
  {n:'Anúncios que vendem',aulas:[
   {t:'Nova aula em breve',d:'',v:'',dur:''},
@@ -906,7 +913,7 @@ function render(){var n=0,extra='';
  MODULOS.forEach(function(m,mi){var f=0,h='';m.aulas.forEach(function(a,ai){if(OK[(mi+1)+'-'+(ai+1)])f++});
   h+='<div class="mb-mod" id="mod-'+(mi+1)+'"><div class="mb-mod-h"><div><small>Módulo '+(mi+1)+'</small><h2 class="mb-mod-t">'+esc(m.n)+'</h2></div><span class="cnt">'+f+'/'+m.aulas.length+' aulas</span></div><div class="mb-row">';
   m.aulas.forEach(function(a,ai){n++;var ok=!!OK[(mi+1)+'-'+(ai+1)],tem=!!emb(a.v);
-   var id=yt(a.v);h+='<a class="au'+(ok?' ok':'')+(tem?'':' breve')+(id?' img':'')+'" href="#aula-'+n+'" data-th="'+(mi%5)+'"><span class="au-th">'+(id?'<img class="au-img" src="https://i.ytimg.com/vi/'+id+'/hqdefault.jpg" alt="" loading="lazy" onerror="this.parentNode.parentNode.classList.remove(\'img\');this.remove()">':'')+'<span class="au-bd">'+(ok?'✓ Concluída':tem?esc(a.dur||'Assistir'):'Em breve')+'</span><span class="au-n">'+(n<10?'0':'')+n+'</span><span class="au-play">'+(tem?PLAY:LOCK)+'</span></span><span class="au-t">'+esc(a.t)+'</span><span class="au-s">Aula '+n+(a.dur?' · '+esc(a.dur):'')+'</span></a>'});
+   var id=yt(a.v);h+='<a class="au'+(ok?' ok':'')+(tem?'':' breve')+(id?' img':'')+'" href="#aula-'+n+'" data-th="'+(mi%5)+'"><span class="au-th">'+(id?'<img class="au-img" src="https://i.ytimg.com/vi/'+id+'/hqdefault.jpg" alt="" loading="lazy" onerror="this.parentNode.parentNode.classList.remove(\'img\');this.remove()">':'')+'<span class="au-bd">'+(ok?'✓ Concluída':tem?esc(a.dur||'Assistir'):'Em breve')+'</span><span class="au-n">'+(n<10?'0':'')+n+'</span><span class="au-play">'+(tem?PLAY:LOCK)+'</span></span><span class="au-t">Aula '+n+'</span>'+(a.tp&&a.tp.length?'<ul class="au-tp">'+a.tp.map(function(x){return'<li>'+esc(x)+'</li>'}).join('')+'</ul>':'')+'</a>'});
   h+='</div></div>';
   var slot=document.querySelector('.mb-slot[data-m="'+mi+'"]');if(slot)slot.innerHTML=h;else extra+=h});
  box.innerHTML=extra;
@@ -938,7 +945,8 @@ function botao(){var ok=!!OK[L[at].k];bOk.classList.toggle('on',ok);bOk.textCont
 function abre(i){if(P.hidden)sy=scrollY;at=i;var x=L[i],src=emb(x.a.v);
  document.getElementById('auPos').textContent='Aula '+(i+1)+' de '+L.length;
  document.getElementById('auMod').textContent='Módulo '+(x.m+1)+' · '+x.mn;
- document.getElementById('auT').textContent=x.a.t;
+ document.getElementById('auT').textContent='Aula '+(i+1);
+ var tp=document.getElementById('auTp'),lst=x.a.tp||[];tp.innerHTML=lst.map(function(t){return'<li>'+esc(t)+'</li>'}).join('');tp.hidden=!lst.length;
  var dd=document.getElementById('auD');dd.textContent=x.a.d||'';dd.hidden=!x.a.d;
  vid.classList.toggle('vertical',!!src&&curto(x.a.v));var ly=document.getElementById('auYt'),idv=yt(x.a.v);ly.hidden=!idv;if(idv)ly.href=curto(x.a.v)?'https://youtube.com/shorts/'+idv:'https://youtu.be/'+idv;
  vid.innerHTML=src?'<iframe src="'+src+'" title="'+esc(x.a.t)+'" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen></iframe>'
